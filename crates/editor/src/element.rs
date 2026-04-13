@@ -12902,10 +12902,14 @@ mod tests {
             Editor::new(EditorMode::full(), buffer, None, window, cx)
         });
 
-        update_test_language_settings(cx, &|settings: &mut settings::AllLanguageSettingsContent| {
-            settings.defaults.soft_wrap = Some(language_settings::SoftWrap::PreferredLineLength);
-            settings.defaults.preferred_line_length = Some(10);
-        });
+        update_test_language_settings(
+            cx,
+            &|settings: &mut settings::AllLanguageSettingsContent| {
+                settings.defaults.soft_wrap =
+                    Some(language_settings::SoftWrap::PreferredLineLength);
+                settings.defaults.preferred_line_length = Some(10);
+            },
+        );
 
         window
             .update(cx, |editor, _window, cx| {
@@ -12922,7 +12926,10 @@ mod tests {
                 let snapshot = editor.snapshot(_window, cx);
 
                 let line_1_display_row = Point::new(1, 0).to_display_point(&snapshot).row();
-                assert!(line_1_display_row.0 > 1, "Line 0 should wrap into multiple rows");
+                assert!(
+                    line_1_display_row.0 > 1,
+                    "Line 0 should wrap into multiple rows"
+                );
 
                 let start_row = DisplayRow(1);
                 let relative_rows = snapshot.calculate_relative_line_numbers(
